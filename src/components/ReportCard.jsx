@@ -1,9 +1,19 @@
 import { Card, CardBody, CardHeader, CardFooter } from '@nextui-org/card'
 import { Divider, ScrollShadow } from '@nextui-org/react';
-import React from 'react'
+import React, { useState } from 'react'
 import QuestionCard from './QuestionCard';
+import Confetti from "react-confetti";
+// import "animate.css";
 
 function ReportCard({ questions }) {
+
+    const [width, setWidth] = useState(innerWidth);
+    const [height, setHeight] = useState(innerHeight);
+
+    addEventListener('resize', () => {
+        setWidth(innerWidth);
+        setHeight(innerHeight);
+    });
 
     const getNumCorrect = () => {
         let numCorrect = 0;
@@ -20,6 +30,11 @@ function ReportCard({ questions }) {
     return (
         <ScrollShadow className='w-full px-8'>
             <div className="flex flex-col gap-10 mx-auto max-w-[300px]">
+
+                {
+                    (getFeedback() == 'pass') && <Confetti width={width} height={height} recycle={false} />
+                }
+
                 <Card className="min-w-[300px]">
                     <CardHeader>
                         <div className='text-sm opacity-50 mx-auto'>
