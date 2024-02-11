@@ -8,7 +8,7 @@ import { images } from "../constants"
 function HomeScreen() {
 
     return (
-        <div className='relative min-h-[100vh] w-full flex flex-col'>
+        <div className='relative w-full flex flex-col' style={{ minHeight: 'calc(100vh - 64px)' }}>
             <div className='absolute w-[200px] h-[200px] bg-sky-500/10 z-1 blur-3xl rounded-full' />
             <div className='absolute w-[200px] h-[200px] top-0 left-20 bg-purple-500/10 z-1 blur-3xl rounded-full' />
             <div className='absolute w-[200px] h-[200px] top-20 left-20 bg-violet-500/10 z-1 blur-3xl rounded-full' />

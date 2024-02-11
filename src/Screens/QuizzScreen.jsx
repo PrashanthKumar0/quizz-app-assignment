@@ -64,7 +64,7 @@ function QuizzScreen() {
 
 
   return (
-    <div className="flex flex-col items-center justify-center py-8 min-h-[100vh]">
+    <div className="flex flex-col items-center justify-center py-8" style={{ minHeight: 'calc(100vh - 64px)' }}>
 
       {!loading && questions && (questionIdx == questions.length)
         ?
