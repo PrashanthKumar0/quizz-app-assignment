@@ -29,32 +29,36 @@ function QuestionCard({ question, currentQuestionNumber, totalQuestions, handleA
 
             <CardBody className='mx-auto my-2'>
                 {/* Question */}
-                <motion.div
-                    key={question.question + 1}
-                    initial={{
-                        translateY: 50,
-                        translateX: 50,
-                        opacity: 0,
-                        scale: 0,
-                    }}
-                    animate={{
-                        translateY: 0,
-                        translateX: 0,
-                        opacity: 1,
-                        scale: 1,
-                    }}
+                {readOnly ?
+                    <div className='opacity-50'>
+                        {question.question}
+                    </div>
+                    :
+                    <motion.div
+                        key={question.question + 1}
+                        initial={{
+                            translateY: 50,
+                            translateX: 50,
+                            opacity: 0,
+                            scale: 0,
+                        }}
+                        animate={{
+                            translateY: 0,
+                            translateX: 0,
+                            opacity: 1,
+                            scale: 1,
+                        }}
 
-                    transition={{
-                        type: 'spring',
-                        stiffness: 260,
-                        damping: 20,
-                    }}
-                >
+                        transition={{
+                            type: 'spring',
+                            stiffness: 260,
+                            damping: 20,
+                        }}
+                    >
 
-                    {
-                        question.question
-                    }
-                </motion.div>
+                        {question.question}
+                    </motion.div>
+                }
 
 
                 {/* Options */}
