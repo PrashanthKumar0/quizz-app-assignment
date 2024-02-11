@@ -11,14 +11,22 @@ function QuizzScreen() {
 
   useEffect(() => {
     setTimeout(() => {
-      const stored = localStorage.getItem('questionResponse');
+      try {
+        const stored = localStorage.getItem('questionResponse');
 
-      // fetch from server
-      if (!stored) return setQuestions((quizzes).map(quizz => ({ ...quizz, response: '' })));
+        // fetch from server
+        if (!stored) {
+          setLoading(false); 
+          setQuestions((quizzes).map(quizz => ({ ...quizz, response: '' })))
+          return;
+        }
 
-      // use stord
-      setQuestions(JSON.parse(stored))
+        // use stord
+        setQuestions(JSON.parse(stored))
+      } catch (err) {
 
+      }
+      console.log('loaded...');
       setLoading(false);
 
     }, 1000)
