@@ -80,7 +80,9 @@ function QuestionCard({ question, currentQuestionNumber, totalQuestions, handleA
 
                         {
                             question.options.map((option, idx) => (
-                                <label className={(selected == option) && readOnly && ((question.answer == question.response) ? 'text-green-500' : 'text-red-500')}>
+                                <label
+                                // className={(selected == option) && readOnly && ((question.answer == question.response) ? 'text-green-500' : 'text-red-500')}
+                                >
                                     <input
                                         type={'radio'}
                                         checked={option == question.response}
@@ -140,10 +142,10 @@ function QuestionCard({ question, currentQuestionNumber, totalQuestions, handleA
             <CardFooter>
                 {!readOnly ?
                     <>
-                        <Button size="sm" variant="bordered" className='m-auto' onClick={() => { handlePrev()}}>Previous</Button>
+                        <Button size="sm" variant="bordered" className='m-auto' onClick={() => { handlePrev() }}>Previous</Button>
                         {(totalQuestions == currentQuestionNumber)
                             ?
-                            <Button size="sm" variant="bordered" color="success" className='m-auto' onClick={() => { handleNext()}}>
+                            <Button size="sm" variant="bordered" color="success" className='m-auto' onClick={() => { handleNext() }}>
                                 Submit
                             </Button>
                             :

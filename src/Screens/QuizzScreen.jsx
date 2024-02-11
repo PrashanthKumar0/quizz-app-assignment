@@ -7,6 +7,7 @@ import ReportCard from '../components/ReportCard';
 function QuizzScreen() {
   const [questions, setQuestions] = useState([]);
   const [questionIdx, setQuestionIdx] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -17,6 +18,8 @@ function QuizzScreen() {
 
       // use stord
       setQuestions(JSON.parse(stored))
+
+      setLoading(false);
 
     }, 1000)
 
@@ -54,12 +57,13 @@ function QuizzScreen() {
 
   return (
     <div className="flex flex-col items-center justify-center py-8 min-h-[100vh]">
-      {questions && (questionIdx == questions.length)
+
+      {!loading && questions && (questionIdx == questions.length)
         ?
         <ReportCard questions={questions} />
         :
         <>
-          {(questions.length > 0) ?
+          {(questions.length > 0 && !loading) ?
             <QuestionCard question={questions[questionIdx]} handleAnswer={handleAnswer} totalQuestions={questions.length} currentQuestionNumber={questionIdx + 1} handleNext={handleNext} handlePrev={handlePrev} />
             :
             <Spinner size="lg" />
