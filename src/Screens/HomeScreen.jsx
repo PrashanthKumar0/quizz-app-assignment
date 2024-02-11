@@ -45,6 +45,9 @@ function HomeScreen() {
                     }}
                     transition={{
                         delay: 1,
+                        type: 'spring',
+                        stiffness: 260,
+                        damping: 20,
                     }}
                 >
                     <Logo />
@@ -60,6 +63,9 @@ function HomeScreen() {
                     }}
                     transition={{
                         delay: 1,
+                        type: 'spring',
+                        stiffness: 260,
+                        damping: 20,
                     }}
                 >
                     <Button variant="bordered" as="a" href="/quizz"> Take Quizz. </Button>

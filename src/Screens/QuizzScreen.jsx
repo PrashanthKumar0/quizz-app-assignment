@@ -10,13 +10,10 @@ function QuizzScreen() {
 
   useEffect(() => {
     setQuestions((quizzes).map(quizz => ({ ...quizz, response: '' })));
+    // get response from localstorage
   }, [])
 
-  useEffect(() => {
-    console.log('qid', questionIdx);
-  }, [questionIdx])
-
-  const handleAnswer = ({ question, answer }) => {
+  const handleAnswer = ({ question }) => {
     const updatedQuestions = questions.map(q => {
       if (q.question == question.question) {
         return { ...question };
@@ -24,22 +21,18 @@ function QuizzScreen() {
         return q;
       }
     });
+    console.log('uq',updatedQuestions)
+    // set in localstorage
     setQuestions(updatedQuestions);
   }
 
   const handleNext = () => {
     setQuestionIdx(questionIdx + 1);
-    // if (questionIdx + 1 < questions.length)
-    //   setQuestionIdx(questionIdx + 1);
-
-    // console.log('next', questionIdx + 1);
   }
 
   const handlePrev = () => {
     if (questionIdx - 1 >= 0)
       setQuestionIdx(questionIdx - 1);
-
-    console.log('prev', questionIdx - 1);
   }
 
 

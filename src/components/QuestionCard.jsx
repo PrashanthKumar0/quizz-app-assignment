@@ -2,28 +2,17 @@ import { Button } from '@nextui-org/button'
 import { Card, CardBody, CardFooter, CardHeader } from '@nextui-org/card'
 import { Divider } from '@nextui-org/divider'
 import { Progress } from '@nextui-org/progress'
-import { Radio, RadioGroup } from '@nextui-org/radio'
-import { Input } from '@nextui-org/react'
-import React, { useRef } from 'react'
-import { cn } from 'tailwind-variants'
+import { motion } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
 
 function QuestionCard({ question, currentQuestionNumber, totalQuestions, handleAnswer = () => { }, handleNext = () => { }, handlePrev = () => { }, readOnly = false }) {
-    const formRef = useRef();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        saveResponse();
-    }
+    const [selected, setSelected] = useState(question.response);
 
-    const saveResponse = () => {
-        if (!formRef || !formRef.current) return;
-
-        const formData = new FormData(formRef.current);
-        const answer = formData.get('answer');
-        question.response = answer;
-
-        handleAnswer({ question, answer });
-    }
+    useEffect(() => {
+        question.response = selected;
+        handleAnswer({ question });
+    }, [selected])
 
     return (
         <Card className="min-w-[300px]">
@@ -32,57 +21,115 @@ function QuestionCard({ question, currentQuestionNumber, totalQuestions, handleA
                     {currentQuestionNumber} of {totalQuestions}
                 </div>
             </CardHeader>
+
             {!readOnly &&
                 <Progress size='sm' value={(currentQuestionNumber / totalQuestions) * 100} />
             }
 
-            <CardBody className='mx-auto'>
-                <div className='my-2'>
-                    <div>
-                        {
-                            question.question
-                        }
-                    </div>
+            <CardBody className='mx-auto my-2'>
+                {/* Question */}
+                <motion.div
+                    key={question.question + 1}
+                    initial={{
+                        translateY: 50,
+                        translateX: 50,
+                        opacity: 0,
+                        scale: 0,
+                    }}
+                    animate={{
+                        translateY: 0,
+                        translateX: 0,
+                        opacity: 1,
+                        scale: 1,
+                    }}
 
-                    <form ref={formRef} onSubmit={handleSubmit} >
-                        <RadioGroup
-                            name='answer'
-                            className='my-4 mx-4'
-                            defaultValue={question.response}
-                            isDisabled={readOnly}
-                        >
-                            {
-                                question.options.map((option, idx) => (
-                                    <Radio
-                                        key={idx + option + question.question}
-                                        name='answer'
-                                        value={option}
-                                        color={
-                                            readOnly ? (
-                                                (option == question.answer) ? 'success' : 'danger'
-                                            ) : 'primary'
-                                        }
-                                        classNames={{
-                                            base: cn(
-                                                "inline-flex m-0 bg-content1 hover:bg-content2 items-center justify-between",
-                                                "flex-row-reverse max-w-[300px] cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent",
-                                                "data-[selected=true]:border-primary"
-                                            ),
-                                        }}
-                                    >
-                                        {option}
-                                    </Radio>
-                                ))
-                            }
-                        </RadioGroup>
+                    transition={{
+                        type: 'spring',
+                        stiffness: 260,
+                        damping: 20,
+                    }}
+                >
 
-                        {/* {!readOnly &&
-                            <Input variant="bordered" color="success" className='m-auto cursor-pointer' size="sm" type="submit" value="submit" />
-                        } */}
-                    </form>
-                </div>
+                    {
+                        question.question
+                    }
+                </motion.div>
 
 
+                {/* Options */}
+
+                <motion.div
+                    key={question.question}
+                    initial={{
+                        translateX: -10,
+                        opacity: 0,
+                    }}
+                    animate={{
+                        translateX: 0,
+                        opacity: 1,
+                    }}
+
+                    transition={{
+                        type: 'spring',
+                        stiffness: 260,
+                        damping: 20,
+                    }}
+                    className='flex flex-col gap-1 my-4'
+                >
+
+                    {
+                        question.options.map((option, idx) => (
+                            <label className={(selected == option) && readOnly && ((question.answer == question.response) ? 'text-green-500' : 'text-red-500')}>
+                                <input
+                                    type={'radio'}
+                                    checked={option == question.response}
+                                    key={idx + option + question.question}
+                                    value={option}
+                                    disabled={readOnly}
+                                    onChange={(e) => { e.target.checked && setSelected(e.target.value); }}
+                                    name="answer"
+                                    color={
+                                        readOnly ? (
+                                            (option == question.answer) ? 'success' : 'danger'
+                                        ) : 'primary'
+                                    }
+                                    className="ml-4"
+                                />
+
+                                <span className='px-4'>
+                                    {option}
+                                </span>
+
+                            </label>
+                        ))
+                    }
+
+                </motion.div>
+
+
+                {/* <RadioGroup
+                    className='my-4 mx-4'
+                    value={selected}
+                    isDisabled={readOnly}
+                    onValueChange={setSelected}
+                >
+                    {
+                        question.options.map((option, idx) => (
+                            <Radio
+                                key={idx + option + question.question}
+                                value={option}
+                                color={
+                                    readOnly ? (
+                                        (option == question.answer) ? 'success' : 'danger'
+                                    ) : 'primary'
+                                }
+                            >
+                                {option}
+                            </Radio>
+                        ))
+                    }
+                </RadioGroup>
+                 */}
             </CardBody>
 
             <Divider />
@@ -112,7 +159,7 @@ function QuestionCard({ question, currentQuestionNumber, totalQuestions, handleA
                     </>
                 }
             </CardFooter>
-        </Card>
+        </Card >
     )
 }
 
