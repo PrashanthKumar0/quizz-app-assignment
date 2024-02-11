@@ -4,7 +4,7 @@ import React from 'react'
 import QuestionCard from './QuestionCard';
 
 function ReportCard({ questions }) {
-
+    
     const getNumCorrect = () => {
         let numCorrect = 0;
         questions.forEach(q => {

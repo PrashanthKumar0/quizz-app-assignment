@@ -9,9 +9,22 @@ function QuizzScreen() {
   const [questionIdx, setQuestionIdx] = useState(0);
 
   useEffect(() => {
-    setQuestions((quizzes).map(quizz => ({ ...quizz, response: '' })));
-    // get response from localstorage
+    setTimeout(() => {
+      const stored = localStorage.getItem('questionResponse');
+
+      // fetch from server
+      if (!stored) return setQuestions((quizzes).map(quizz => ({ ...quizz, response: '' })));
+
+      // use stord
+      setQuestions(JSON.parse(stored))
+
+    }, 1000)
+
   }, [])
+
+  const resetStorage = () => {
+    setTimeout(() => localStorage.removeItem('questionResponse'), 1000)
+  }
 
   const handleAnswer = ({ question }) => {
     const updatedQuestions = questions.map(q => {
@@ -21,13 +34,16 @@ function QuizzScreen() {
         return q;
       }
     });
-    console.log('uq',updatedQuestions)
+
     // set in localstorage
     setQuestions(updatedQuestions);
+    setTimeout(() => localStorage.setItem('questionResponse', JSON.stringify(updatedQuestions)), 1000)
   }
 
   const handleNext = () => {
     setQuestionIdx(questionIdx + 1);
+    if (questionIdx + 1 >= questions.length)
+      resetStorage();
   }
 
   const handlePrev = () => {
